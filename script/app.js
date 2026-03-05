@@ -1,3 +1,8 @@
+const createElements = (arr) => {
+    const htmlElements = arr.map((el) => `<span class="btn btn-outline btn-info">${el}</span>`);
+    return (htmlElements.join(""));
+};
+
 const loadLessons = () => {
     fetch('https://openapi.programming-hero.com/api/levels/all') // promise of response
     .then(res => res.json()) // promise of json data
@@ -24,6 +29,57 @@ const loadLevelWord = (id) => {
         clickBtn.classList.add("active");
         displayLevelWord(data.data);
     });
+}
+
+// {
+//     "word": "Cautious",
+//     "meaning": "সতর্ক",
+//     "pronunciation": "কশাস",
+//     "level": 2,
+//     "sentence": "Be cautious while crossing the road.",
+//     "points": 2,
+//     "partsOfSpeech": "adjective",
+//     "synonyms": [
+//         "careful",
+//         "alert",
+//         "watchful"
+//     ],
+//     "id": 3
+// }
+
+
+const loadWordDetail = async(id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`;
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data);
+};
+const displayWordDetails = (word) => {
+    // console.log(word);
+    const detailsContainer = document.getElementById("details-container");
+    detailsContainer.innerHTML = `
+    
+    <div class="space-y-4 p-5">
+            <h2 class="text-3xl font-semibold">
+              ${word.word} (<i class="fa-solid fa-microphone-lines"></i>:${word.pronunciation})
+            </h2>
+            <p class="text-2xl font-semibold">Meaning</p>
+            <p class="text-xl font-medium">${word.meaning}</p>
+            <p class="text-2xl font-semibold">Example</p>
+            <p class="text-xl font-normal">
+              ${word.sentence}
+            </p>
+            <p class="text-xl font-medium">সমার্থক শব্দ গুলো</p>
+            <div class="flex gap-3 flex-wrap">
+              
+              ${createElements (word.synonyms)}
+        
+            </div>
+          </div>
+    
+    
+    `;
+    document.getElementById("my_modal_5").showModal();
 }
 
 const displayLevelWord =(words) => {
@@ -66,7 +122,7 @@ const displayLevelWord =(words) => {
         "${word.meaning ? word.meaning : "Meaning is not found"}/
          ${word.pronunciation ? word.pronunciation : 
             "Pronunciation is not found"}"</p>
-        <div onclick="my_modal_5.showModal()" class="flex justify-between items-center px-10">
+        <div onclick="loadWordDetail(${word.id})" class="flex justify-between items-center px-10">
           <button class="btn btn-outline btn-primary">
             <i class="fa-solid fa-circle-info"></i>
           </button>
