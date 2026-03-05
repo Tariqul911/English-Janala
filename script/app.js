@@ -16,6 +16,20 @@ const displayLevelWord =(words) => {
     const wordContainer = document.getElementById('word-container');
     wordContainer.innerHTML = "";
 
+    if (words.length == 0){
+        wordContainer.innerHTML = `
+        <div
+        class="text-center bg-sky-100 col-span-full rounded-sm py-10 space-y-10"
+      >
+        <img class="inline-block" src="assets/alert-error.png" alt="" />
+        <p class="text-xl font-medium text-gray-500">
+          এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।
+        </p>
+        <h2 class="text-5xl font-semibold">নেক্সট Lesson এ যান</h2>
+      </div>
+        `;
+        return;
+    }
 
 //     {
 //     "id": 82,
@@ -32,9 +46,9 @@ const displayLevelWord =(words) => {
          <div
         class="bg-blue-50 px-2 py-10 text-center rounded-xl shadow-sm space-y-3"
       >
-        <h2 class="text-3xl font-bold">${word.word}</h2>
+        <h2 class="text-3xl font-bold">${word.word ? word.word : "Word is not found"}</h2>
         <p class="text-lg">Meaning /Pronunciation</p>
-        <p class="text-2xl font-semibold">"${word.meaning}/ ${word.pronunciation}"</p>
+        <p class="text-2xl font-semibold">"${word.meaning ? word.meaning : "Meaning is not found"}/ ${word.pronunciation ? word.pronunciation : "Pronunciation is not found"}"</p>
         <div class="flex justify-between items-center px-10">
           <button class="btn btn-outline btn-primary">
             <i class="fa-solid fa-circle-info"></i>
